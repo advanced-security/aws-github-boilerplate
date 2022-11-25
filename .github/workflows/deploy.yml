@@ -40,7 +40,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::377117578606:role/ghas-alert-notifier
-          role-session-name: ghas-alert-notifier
+          role-session-name: ghasalertnotifier
           aws-region: ${{ env.REGION }}
 
       - name: Install and Build Function (GithubWebhookIPValidator)
