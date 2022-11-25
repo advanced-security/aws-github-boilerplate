@@ -5,3 +5,70 @@ Description: >
   GitHub Alert Notifier
 
 Resources:
+  GitHubWebhookSecretValidator:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      CodeUri: functions/authorizers/githubWebhookSecretValidator
+      Description: "A Lambda that validates a GitHub Secret"
+      Environment:
+        Variables:
+          NODE_ENV: Production
+          REGION: !Ref "AWS::Region"
+      Events:
+        GatewayEndpoint:
+          Properties:
+            ApiId: !Ref HttpApi
+            Method: POST
+            Path: /github/webhook/validate
+          Type: HttpApi
+      Handler: lib/main.handler
+      Policies:
+        - AmazonSSMReadOnlyAccess
+      Runtime: nodejs18.x
+      Timeout: 60
+      Tracing: Active
+
+  LambdaInvokeRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+
+  GitHubWebhookIPValidator:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      CodeUri: functions/authorizers/githubWebhookIPValidator
+      Description: "A Lambda Function that validates the IP comes from GitHub"
+      Environment:
+        Variables:
+          NODE_ENV: Production
+          REGION: !Ref "AWS::Region"
+      Handler: lib/main.handler
+      Policies:
+        - AmazonSSMReadOnlyAccess
+      Runtime: nodejs18.x
+      Timeout: 60
+      Tracing: Active
+
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      FailOnWarnings: True
+      RouteSettings:
+        "POST /github/webhook/validate":
+          ThrottlingBurstLimit: 10
+      Auth:
+        Authorizers:
+          LambdaAuthorizer:
+            AuthorizerPayloadFormatVersion: "2.0"
+            EnableSimpleResponses: true
+            FunctionArn: !GetAtt GitHubWebhookIPValidator.Arn
+            FunctionInvokeRole: !GetAtt LambdaInvokeRole.Arn
+        DefaultAuthorizer: LambdaAuthorizer
