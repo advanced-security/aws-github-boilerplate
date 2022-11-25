@@ -97,7 +97,7 @@ Resources:
   StateMachine:
     Type: AWS::Serverless::StateMachine
     Properties:
-      DefinitionUri: stepfunctions/ghas-notifier.yml
+      DefinitionUri: stepfunctions/definition.yml
       DefinitionSubstitutions:
         GitHubWebhookSecretValidatorFunctionArn: !GetAtt GitHubWebhookSecretValidator.Arn
       Type: EXPRESS
