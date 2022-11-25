@@ -1,0 +1,42 @@
+{
+  "name": "github-webhook-ip-validator",
+  "version": "1.0.0",
+  "description": "Lambda which validates the webhook comes from GitHub",
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tsconfig/node18": "^1.0.1",
+    "@types/aws-lambda": "^8.10.109",
+    "@types/ip": "^1.1.0",
+    "@types/json-schema": "^7.0.11",
+    "@types/node": "^18.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.0",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.3"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NickLiffen/GSSAR"
+  },
+  "dependencies": {
+    "@aws-sdk/client-eventbridge": "^3.216.0",
+    "@aws-sdk/client-ssm": "^3.216.0",
+    "@octokit/auth-app": "^4.0.7",
+    "@octokit/graphql": "^5.0.4",
+    "@octokit/webhooks-methods": "^3.0.1",
+    "ip": "^1.1.8"
+  }
+}

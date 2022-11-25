@@ -1,0 +1,68 @@
+name: Deploying GSSAR
+
+"on":
+  push:
+    branches:
+      - main
+      - ft/**
+      - bug/**
+      - hotfix/**
+      - release/**
+
+jobs:
+  DeployStack:
+    runs-on: ubuntu-latest
+    env:
+      REGION: us-east-1
+    environment: main
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Setup AWS SAM
+        uses: aws-actions/setup-sam@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          aws-secret-access-key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          aws-region: "${{ env.REGION }}"
+
+      - name: Install and Build Function (GithubWebhookIPValidator)
+        run: |
+          cd ./functions/authorizers/githubWebhookIPValidator 
+          yarn cache clean --force
+          yarn install --frozen-lockfile
+          yarn run build
+
+      - name: Install and Build Function (GithubWebhookSecretValidator)
+        run: |
+          cd ./functions/authorizers/githubWebhookSecretValidator 
+          yarn cache clean --force
+          yarn install --frozen-lockfile
+          yarn run build
+
+      - name: SAM Build
+        run: sam build --use-container
+
+      - name: SAM Deploy
+        shell: bash
+        run: |
+          branch=$(git rev-parse --abbrev-ref HEAD)
+          echo "Current branch is: $branch"
+          formattedBranch=$(echo $branch | sed -e 's/\//-/g')
+          echo "Formatted branch is: $formattedBranch"
+          stackName="ghas-notififier-$formattedBranch"
+          echo "Stack name: $stackName"
+          sam deploy --debug --no-confirm-changeset --no-fail-on-empty-changeset --stack-name "$stackName" --capabilities CAPABILITY_IAM --region ${{ env.REGION }} --resolve-s3

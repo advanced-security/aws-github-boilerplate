@@ -11,8 +11,8 @@
     "cfn:check": "cfn-lint -t ./template.yml",
     "check": "yarn run prettier:check && yarn run lint:check && yarn run cfn:check",
     "write": "yarn run prettier:write && yarn run lint:write",
-    "codespace:setup": ".devcontainer/setup.sh",
-    "upgrade": ".devcontainer/ncu.sh"
+    "setup": ".devcontainer/setup.sh",
+    "ncu": ".devcontainer/ncu.sh"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/NickLiffen/alert-notifier/#readme",
   "devDependencies": {
     "husky": "^8.0.2",
-    "@tsconfig/node14": "^1.0.3",
+    "@tsconfig/node18": "^1.0.1",
     "@types/json-schema": "^7.0.11",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.44.0",

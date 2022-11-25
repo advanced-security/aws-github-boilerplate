@@ -13,7 +13,10 @@
       "!Select sequence",
       "!Split sequence",
       "!Sub"
-    ]
+    ],
+    "yaml.schemas": {
+      "https://json.schemastore.org/github-workflow.json": "file:///workspaces/alert-notifier/.github/workflows/deploy.yml"
+    }
   },
   "extensions": [
     "dbaeumer.vscode-eslint",

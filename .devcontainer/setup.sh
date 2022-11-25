@@ -10,14 +10,6 @@ function setup {
     done
 }
 
-cd /workspaces/GSSAR/functions/helpers
-
-setup
-
-cd /workspaces/GSSAR/functions/authorizers
-
-setup
-
-cd /workspaces/GSSAR/functions/remediators
+cd /workspaces/alert-notifier/functions/authorizers
 
 setup
