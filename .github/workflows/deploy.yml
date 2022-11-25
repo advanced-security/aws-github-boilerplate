@@ -1,6 +1,7 @@
 name: Deploying GSSAR
 
 "on":
+  workflow_dispatch:
   push:
     branches:
       - main
