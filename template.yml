@@ -5,6 +5,11 @@ Description: >
   GitHub Alert Notifier
 
 Resources:
+  EventBus:
+    Type: AWS::Events::EventBus
+    Properties:
+      Name: !Join ["-", [ghas-notifier, !Ref AWS::StackName]]
+
   GitHubWebhookSecretValidator:
     Type: "AWS::Serverless::Function"
     Properties:
@@ -14,6 +19,7 @@ Resources:
         Variables:
           NODE_ENV: Production
           REGION: !Ref "AWS::Region"
+          EVENT_BUS_NAME: !Ref EventBus
       Events:
         GatewayEndpoint:
           Properties:
@@ -21,6 +27,24 @@ Resources:
             Method: POST
             Path: /github/webhook/validate
           Type: HttpApi
+      Handler: lib/main.handler
+      Policies:
+        - AmazonSSMReadOnlyAccess
+        - EventBridgePutEventsPolicy:
+            EventBusName: !Ref EventBus
+      Runtime: nodejs18.x
+      Timeout: 60
+      Tracing: Active
+
+  GitHubWebhookIPValidator:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      CodeUri: functions/authorizers/githubWebhookIPValidator
+      Description: "A Lambda Function that validates the IP comes from GitHub"
+      Environment:
+        Variables:
+          NODE_ENV: Production
+          REGION: !Ref "AWS::Region"
       Handler: lib/main.handler
       Policies:
         - AmazonSSMReadOnlyAccess
@@ -41,21 +65,18 @@ Resources:
             Action:
               - "sts:AssumeRole"
 
-  GitHubWebhookIPValidator:
-    Type: "AWS::Serverless::Function"
+  LambdaInvokePolicy:
+    Type: "AWS::IAM::Policy"
     Properties:
-      CodeUri: functions/authorizers/githubWebhookIPValidator
-      Description: "A Lambda Function that validates the IP comes from GitHub"
-      Environment:
-        Variables:
-          NODE_ENV: Production
-          REGION: !Ref "AWS::Region"
-      Handler: lib/main.handler
-      Policies:
-        - AmazonSSMReadOnlyAccess
-      Runtime: nodejs18.x
-      Timeout: 60
-      Tracing: Active
+      PolicyName: "LambdaInvokePolicy"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action: "lambda:InvokeFunction"
+            Resource: !GetAtt GitHubWebhookIPValidator.Arn
+      Roles:
+        - Ref: "LambdaInvokeRole"
 
   HttpApi:
     Type: AWS::Serverless::HttpApi
@@ -72,3 +93,30 @@ Resources:
             FunctionArn: !GetAtt GitHubWebhookIPValidator.Arn
             FunctionInvokeRole: !GetAtt LambdaInvokeRole.Arn
         DefaultAuthorizer: LambdaAuthorizer
+
+  StateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri: stepfunctions/ghas-notifier.yml
+      DefinitionSubstitutions:
+        GitHubWebhookSecretValidatorFunctionArn: !GetAtt GitHubWebhookSecretValidator.Arn
+      Type: EXPRESS
+      Events:
+        EBRule:
+          Type: EventBridgeRule
+          Properties:
+            EventBusName: !Ref EventBus
+            RetryPolicy:
+              MaximumRetryAttempts: 2
+            DeadLetterConfig:
+              Type: SQS
+              QueueLogicalId: DeadLetterQueue
+            Pattern:
+              source:
+                - custom.kickOffSecretScanRemediation
+              detail-type:
+                - transaction
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref GitHubWebhookSecretValidator
+        - CloudWatchLogsFullAccess
