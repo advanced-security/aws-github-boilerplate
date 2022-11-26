@@ -4,7 +4,7 @@ StartAt: First Task
 States:
   First Task:
     Type: Task
-    Resource: "${GitHubIssueNotifierFunctionArn}"
+    Resource: "${ExampleFunction}"
     TimeoutSeconds: 10
     HeartbeatSeconds: 30
     Retry:

@@ -52,6 +52,22 @@ Resources:
       Timeout: 60
       Tracing: Active
 
+  ExampleFunction:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      CodeUri: functions/authorizers/exampleFunction
+      Description: "An example Lambda Function"
+      Environment:
+        Variables:
+          NODE_ENV: Production
+          REGION: !Ref "AWS::Region"
+      Handler: lib/main.handler
+      Policies:
+        - AmazonSSMReadOnlyAccess
+      Runtime: nodejs18.x
+      Timeout: 60
+      Tracing: Active
+
   LambdaInvokeRole:
     Type: "AWS::IAM::Role"
     Properties:
@@ -99,7 +115,7 @@ Resources:
     Properties:
       DefinitionUri: stepfunctions/definition.yml
       DefinitionSubstitutions:
-        GitHubWebhookSecretValidatorFunctionArn: !GetAtt GitHubWebhookSecretValidator.Arn
+        ExampleFunction: !GetAtt ExampleFunction.Arn
       Type: EXPRESS
       Events:
         EBRule:
@@ -113,10 +129,10 @@ Resources:
               QueueLogicalId: DeadLetterQueue
             Pattern:
               source:
-                - custom.kickOffSecretScanRemediation
+                - custom.kickOffStateMachine
               detail-type:
                 - transaction
       Policies:
         - LambdaInvokePolicy:
-            FunctionName: !Ref GitHubWebhookSecretValidator
+            FunctionName: !Ref ExampleFunction
         - CloudWatchLogsFullAccess

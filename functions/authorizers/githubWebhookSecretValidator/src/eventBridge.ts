@@ -16,7 +16,7 @@ export const put = async (event: APIGatewayProxyEventV2): Promise<number> => {
     const input = {
       Entries: [
         {
-          Source: "custom.kickOffSecretScanRemediation",
+          Source: "custom.kickOffStateMachine",
           EventBusName: process.env.EVENT_BUS_NAME,
           DetailType: "transaction",
           Time: new Date(),

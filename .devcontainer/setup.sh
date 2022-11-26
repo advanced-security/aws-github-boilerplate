@@ -13,3 +13,7 @@ function setup {
 cd /workspaces/alert-notifier/functions/authorizers
 
 setup
+
+cd /workspaces/alert-notifier/functions/logic
+
+setup
