@@ -47,13 +47,13 @@ Once you have created your role, and set up the identity, please:
 1. In the `main` enviroment, create a GitHub secret called `AWS_ACCOUNT_ID`. Put the AWS Account ID here where the role is created.
 1. In the `main` enviroment, create a GitHub secret called`AWS_ROLE_NAME`: Put the AWS IAM role name here.
 
-> **Info**: We recommend you update your AWS IAM Role to filter the subject claim from the `main` environment. See instructions on how to do that [here](https://docs.github.com/en/enterprise-cloud@latest/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#filtering-for-a-specific-environment). This adds another layer of protection.
+> **Warning**: We recommend you update your AWS IAM Role to filter the subject claim from the `main` environment. See instructions on how to do that [here](https://docs.github.com/en/enterprise-cloud@latest/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#filtering-for-a-specific-environment). This adds another layer of protection.
 
 #### Stage Three: Create a GitHub App
 
 Create a GitHub App, [using these instructions](https://docs.github.com/en/enterprise-cloud@latest/developers/apps/building-github-apps/creating-a-github-app).
 
-> **Info**: You are welcome to put dummy values in the input fields for the new app, as we don't know the right values yet. The only value you need to put a valud value in is: `Webhook Secret`, please put the a seret in here, that you will
+> **Warning**: You are welcome to put dummy values in the input fields for the new app, as we don't know the right values yet. The only value you need to put a valud value in is: `Webhook Secret`, please put the a seret in here, that you will
 
 #### Stage Four: Update AWS Systems Manager (Parameter Store)
 
