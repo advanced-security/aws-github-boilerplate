@@ -95,7 +95,7 @@ Resources:
       FailOnWarnings: True
       StageName: !Ref StageName
       AccessLogSettings:
-        DestinationArn: !GetAtt AccessLogs.Arn
+        DestinationArn: !GetAtt APIAccessLogs.Arn
         Format: $context.requestId
       RouteSettings:
         "POST /github/webhook/validate":
@@ -109,8 +109,15 @@ Resources:
             FunctionInvokeRole: !GetAtt LambdaInvokeRole.Arn
         DefaultAuthorizer: LambdaAuthorizer
 
-  AccessLogs:
+  APIAccessLogs:
     Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 7
+      LogGroupName:
+        !Join [
+          "/",
+          ["/aws/vendedlogs", !Ref AWS::StackName, "API", "access-logs"],
+        ]
 
   StateMachine:
     Type: AWS::Serverless::StateMachine
