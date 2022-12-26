@@ -4,6 +4,11 @@ Transform: "AWS::Serverless-2016-10-31"
 Description: >
   A template for a serverless application that uses AWS Step Functions and AWS EventBridge
 
+Parameters:
+  StageName:
+    Type: String
+    Default: Prod
+
 Globals:
   Function:
     Runtime: nodejs18.x
@@ -14,7 +19,7 @@ Globals:
       Variables:
         NODE_ENV: Production
         REGION: !Ref "AWS::Region"
-        SSM_PARAMETER_STORE_PREFIX: aws-github-boilerplate
+        SSM_PARAMETER_STORE_PREFIX: github-boilerplate
 
 Resources:
   EventBus:
@@ -88,6 +93,10 @@ Resources:
     Type: AWS::Serverless::HttpApi
     Properties:
       FailOnWarnings: True
+      StageName: !Ref StageName
+      AccessLogSettings:
+        DestinationArn: !GetAtt AccessLogs.Arn
+        Format: $context.requestId
       RouteSettings:
         "POST /github/webhook/validate":
           ThrottlingBurstLimit: 10
@@ -99,6 +108,9 @@ Resources:
             FunctionArn: !GetAtt GitHubWebhookIPValidator.Arn
             FunctionInvokeRole: !GetAtt LambdaInvokeRole.Arn
         DefaultAuthorizer: LambdaAuthorizer
+
+  AccessLogs:
+    Type: AWS::Logs::LogGroup
 
   StateMachine:
     Type: AWS::Serverless::StateMachine
@@ -126,3 +138,13 @@ Resources:
         - LambdaInvokePolicy:
             FunctionName: !Ref ExampleFunction
         - CloudWatchLogsFullAccess
+
+Outputs:
+  HttpApiUrl:
+    Description: URL of the API
+    Value:
+      Fn::Sub: "https://${HttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${StageName}/"
+  HttpApiId:
+    Description: Api id of HttpApi
+    Value:
+      Ref: HttpApi
