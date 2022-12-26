@@ -32,6 +32,6 @@
     "nixon.env-cmd-file-syntax",
     "mattpocock.ts-error-translator"
   ],
-  "postCreateCommand": "yarn install --frozen-lockfile && yarn run build",
+  "postCreateCommand": "yarn install --frozen-lockfile && yarn run setup",
   "remoteUser": "root"
 }
