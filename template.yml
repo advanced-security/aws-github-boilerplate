@@ -55,7 +55,7 @@ Resources:
   ExampleFunction:
     Type: "AWS::Serverless::Function"
     Properties:
-      CodeUri: functions/authorizers/exampleFunction
+      CodeUri: functions/core/exampleFunction
       Description: "An example Lambda Function"
       Environment:
         Variables:
