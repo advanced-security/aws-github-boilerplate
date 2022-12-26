@@ -1,5 +1,5 @@
 {
-  "name": "alert-notifier",
+  "name": "aws-github-boilerplate",
   "version": "1.0.0",
   "description": "Alert Notifier",
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/NickLiffen/alert-notifier.git"
+    "url": "https://github.com/advanced-security/aws-github-boilerplate.git"
   },
   "keywords": [
     "GitHub",
@@ -28,9 +28,9 @@
   "author": "Nick Liffen",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/NickLiffen/alert-notifier/issues"
+    "url": "https://github.com/advanced-security/aws-github-boilerplate/issues"
   },
-  "homepage": "https://github.com/NickLiffen/alert-notifier/#readme",
+  "homepage": "https://github.com/advanced-security/aws-github-boilerplate/#readme",
   "devDependencies": {
     "husky": "^8.0.2",
     "@tsconfig/node18": "^1.0.1",

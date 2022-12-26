@@ -1,5 +1,5 @@
 {
-  "name": "nickliffen/alert-notifier",
+  "name": "advanced-security/aws-github-boilerplate",
   "image": "ghcr.io/nickliffen/csenv:main",
   "settings": {
     "yaml.customTags": [
@@ -15,7 +15,7 @@
       "!Sub"
     ],
     "yaml.schemas": {
-      "https://json.schemastore.org/github-workflow.json": "file:///workspaces/alert-notifier/.github/workflows/deploy.yml"
+      "https://json.schemastore.org/github-workflow.json": "file:///workspaces/aws-github-boilerplate/.github/workflows/deploy.yml"
     }
   },
   "extensions": [

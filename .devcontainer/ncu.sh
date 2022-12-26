@@ -11,10 +11,10 @@ function setup {
     done
 }
 
-cd /workspaces/alert-notifier/functions/authorizers
+cd /workspaces/aws-github-boilerplate/functions/authorizers
 
 setup
 
-cd /workspaces/alert-notifier/functions/logic
+cd /workspaces/aws-github-boilerplate/functions/logic
 
 setup
