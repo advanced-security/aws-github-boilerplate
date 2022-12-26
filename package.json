@@ -20,10 +20,8 @@
   },
   "keywords": [
     "GitHub",
-    "Code",
-    "Scanning",
-    "Alerts",
-    "Notifier"
+    "AWS",
+    "Boilerplate"
   ],
   "author": "Nick Liffen",
   "license": "ISC",
@@ -35,15 +33,15 @@
     "husky": "^8.0.2",
     "@tsconfig/node18": "^1.0.1",
     "@types/json-schema": "^7.0.11",
-    "@types/node": "^18.11.9",
-    "@typescript-eslint/eslint-plugin": "^5.44.0",
-    "@typescript-eslint/parser": "^5.44.0",
-    "eslint": "^8.28.0",
+    "@types/node": "^18.11.17",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
+    "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.0",
+    "prettier": "^2.8.1",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.4"
   }
 }
