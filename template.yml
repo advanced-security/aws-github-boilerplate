@@ -114,9 +114,16 @@ Resources:
     Properties:
       RetentionInDays: 7
       LogGroupName:
+        !Join ["/", ["/aws/vendedlogs", !Ref AWS::StackName, "HttpApi", "logs"]]
+
+  StateMachineLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 7
+      LogGroupName:
         !Join [
           "/",
-          ["/aws/vendedlogs", !Ref AWS::StackName, "API", "access-logs"],
+          ["/aws/vendedlogs", !Ref AWS::StackName, "StateMachine", "logs"],
         ]
 
   StateMachine:
@@ -126,6 +133,12 @@ Resources:
       DefinitionSubstitutions:
         ExampleFunction: !GetAtt ExampleFunction.Arn
       Type: EXPRESS
+      Logging:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn: !GetAtt StateMachineLogs.Arn
+        IncludeExecutionData: true
+        Level: "ALL"
       Events:
         EBRule:
           Type: EventBridgeRule
