@@ -35,21 +35,25 @@ The documentation in this repository also assums a techincal audience.
 
 #### Stage Two: AWS Role, Enviroment and Secrets Setup
 
-This repository makes use of the in-built OIDC feature within GitHub workflows. Please read the following article on how to get setup. [Configuring OpenID Connect in Amazon Web Services](https://docs.github.com/en/enterprise-cloud@latest/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services).
+This repository makes use of the in-built OIDC feature within GitHub workflows. Please read the following article on how to get setup. Create a role within AWS IAM and configure the role to use OpenID Connect. More instructions can be found here: [Configuring OpenID Connect in Amazon Web Services](https://docs.github.com/en/enterprise-cloud@latest/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services).
+
+When you create the role, attach the following policies:
+
+<img width="1342" alt="AWS IAM Role" src="https://user-images.githubusercontent.com/6696451/209571182-8af0a3f5-bf0f-478f-b187-a2dfff0447f8.png">
 
 Once you have created your role, and set up the identity, please:
 
 1. Create a new [GitHub Enviroment](https://docs.github.com/en/enterprise-cloud@latest/actions/deployment/targeting-different-environments/using-environments-for-deployment) called `main`.
-1. In the `main` enviroment, create a GitHub secret called `AWS_ACCOUNT_ID`. Put the AWS Account ID here.
-1. In the `main` enviroment, create a GitHub secret called`AWS_ROLE_NAME`: Put the AWS IAM role name.
+1. In the `main` enviroment, create a GitHub secret called `AWS_ACCOUNT_ID`. Put the AWS Account ID here where the role is created.
+1. In the `main` enviroment, create a GitHub secret called`AWS_ROLE_NAME`: Put the AWS IAM role name here.
 
-> **Information**: We recommend you update your AWS IAM Role to filter the subject claim from the `main` environment. See instructions on how to do that [here](https://docs.github.com/en/enterprise-cloud@latest/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#filtering-for-a-specific-environment). This adds another layer of protection.
+> **Info**: We recommend you update your AWS IAM Role to filter the subject claim from the `main` environment. See instructions on how to do that [here](https://docs.github.com/en/enterprise-cloud@latest/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#filtering-for-a-specific-environment). This adds another layer of protection.
 
 #### Stage Three: Create a GitHub App
 
 Create a GitHub App, [using these instructions](https://docs.github.com/en/enterprise-cloud@latest/developers/apps/building-github-apps/creating-a-github-app).
 
-> **Information**: You are welcome to put dummy values in the input fields for the new app, as we don't know the right values yet. The only value you need to put a valud value in is: `Webhook Secret`, please put the a seret in here, that you will
+> **Info**: You are welcome to put dummy values in the input fields for the new app, as we don't know the right values yet. The only value you need to put a valud value in is: `Webhook Secret`, please put the a seret in here, that you will
 
 #### Stage Four: Update AWS Systems Manager (Parameter Store)
 
@@ -65,3 +69,9 @@ Create the following parameters in AWS Systems Manager.
 #### Stage Five: Run the Deploy
 
 You can run the workflow manually using the [workflow_dispatch](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow) event.
+
+#### Stage Six: Test the Deploy
+
+Once the deploy has been kicked off, it's worth checking the github workflow output and also the cloud formation output. Check logs for any errors and correct as needed.
+
+> **Warning** There are likely edge cases that have not been taken into consideration. As you find errors, please open issues on this repository and we will update the `README`.
