@@ -13,16 +13,16 @@
     "@types/aws-lambda": "^8.10.109",
     "@types/ip": "^1.1.0",
     "@types/json-schema": "^7.0.11",
-    "@types/node": "^18.11.9",
-    "@typescript-eslint/eslint-plugin": "^5.44.0",
-    "@typescript-eslint/parser": "^5.44.0",
-    "eslint": "^8.28.0",
+    "@types/node": "^18.11.17",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
+    "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.0",
+    "prettier": "^2.8.1",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.4"
   },
   "engines": {
     "node": "18"
@@ -32,8 +32,8 @@
     "url": "https://github.com/NickLiffen/GSSAR"
   },
   "dependencies": {
-    "@aws-sdk/client-eventbridge": "^3.216.0",
-    "@aws-sdk/client-ssm": "^3.216.0",
+    "@aws-sdk/client-eventbridge": "^3.238.0",
+    "@aws-sdk/client-ssm": "^3.238.0",
     "@octokit/auth-app": "^4.0.7",
     "@octokit/graphql": "^5.0.4",
     "@octokit/webhooks-methods": "^3.0.1",

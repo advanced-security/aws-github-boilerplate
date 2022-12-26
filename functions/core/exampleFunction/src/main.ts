@@ -1,5 +1,4 @@
-import { ssm } from "./ssm";
-import { SecretScanningAlertCreatedEvent } from "@octokit/webhooks-types";
+import { SecretScanningAlertCreatedEvent } from "@octokit/webhooks-types"; // Change this to your webhook type
 
 import { EventBridgeEvent } from "aws-lambda";
 
@@ -8,7 +7,7 @@ export const handler = async (
 ): Promise<void> => {
   console.log(`Event: ${JSON.stringify(event)}`);
   try {
-    await ssm();
+    // Put logic here for your applications
   } catch (e: any) {
     console.error(e);
     throw e;

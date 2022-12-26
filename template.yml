@@ -2,7 +2,19 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: "AWS::Serverless-2016-10-31"
 
 Description: >
-  GitHub Alert Notifier
+  A template for a serverless application that uses AWS Step Functions and AWS EventBridge
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 60
+    Tracing: Active
+    Handler: lib/main.handler
+    Environment:
+      Variables:
+        NODE_ENV: Production
+        REGION: !Ref "AWS::Region"
+        SSM_PARAMETER_STORE_PREFIX: aws-github-boilerplate
 
 Resources:
   EventBus:
@@ -17,8 +29,6 @@ Resources:
       Description: "A Lambda that validates a GitHub Secret"
       Environment:
         Variables:
-          NODE_ENV: Production
-          REGION: !Ref "AWS::Region"
           EVENT_BUS_NAME: !Ref EventBus
       Events:
         GatewayEndpoint:
@@ -27,46 +37,26 @@ Resources:
             Method: POST
             Path: /github/webhook/validate
           Type: HttpApi
-      Handler: lib/main.handler
       Policies:
         - AmazonSSMReadOnlyAccess
         - EventBridgePutEventsPolicy:
             EventBusName: !Ref EventBus
-      Runtime: nodejs18.x
-      Timeout: 60
-      Tracing: Active
 
   GitHubWebhookIPValidator:
     Type: "AWS::Serverless::Function"
     Properties:
       CodeUri: functions/authorizers/githubWebhookIPValidator
       Description: "A Lambda Function that validates the IP comes from GitHub"
-      Environment:
-        Variables:
-          NODE_ENV: Production
-          REGION: !Ref "AWS::Region"
-      Handler: lib/main.handler
       Policies:
         - AmazonSSMReadOnlyAccess
-      Runtime: nodejs18.x
-      Timeout: 60
-      Tracing: Active
 
   ExampleFunction:
     Type: "AWS::Serverless::Function"
     Properties:
       CodeUri: functions/core/exampleFunction
       Description: "An example Lambda Function"
-      Environment:
-        Variables:
-          NODE_ENV: Production
-          REGION: !Ref "AWS::Region"
-      Handler: lib/main.handler
       Policies:
         - AmazonSSMReadOnlyAccess
-      Runtime: nodejs18.x
-      Timeout: 60
-      Tracing: Active
 
   LambdaInvokeRole:
     Type: "AWS::IAM::Role"

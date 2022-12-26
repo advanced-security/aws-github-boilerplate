@@ -1,4 +1,4 @@
-name: Deploying GSSAR
+name: Deploying Boilerplate to AWS
 
 on:
   workflow_dispatch:
@@ -39,8 +39,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::377117578606:role/ghas-alert-notifier
-          role-session-name: ghasalertnotifier
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_NAME }}
+          role-session-name: role-session-name
           aws-region: ${{ env.REGION }}
 
       - name: Install and Build Function (GithubWebhookIPValidator)
@@ -74,6 +74,6 @@ jobs:
           echo "Current branch is: $branch"
           formattedBranch=$(echo $branch | sed -e 's/\//-/g')
           echo "Formatted branch is: $formattedBranch"
-          stackName="ghas-notififier-$formattedBranch"
+          stackName="aws-github-boilerplate-$formattedBranch"
           echo "Stack name: $stackName"
           sam deploy --debug --no-confirm-changeset --no-fail-on-empty-changeset --stack-name "$stackName" --capabilities CAPABILITY_IAM --region ${{ env.REGION }} --resolve-s3

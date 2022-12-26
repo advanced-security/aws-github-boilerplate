@@ -1,7 +1,7 @@
 {
   "name": "aws-github-boilerplate",
   "version": "1.0.0",
-  "description": "Alert Notifier",
+  "description": "A boilerplate for building a webhook driven application on AWS",
   "scripts": {
     "prepare": "husky install",
     "prettier:write": "npx prettier --write '**/*.{ts,json,md,yaml,yml}'",
