@@ -30,7 +30,7 @@
     "url": "https://github.com/NickLiffen/GSSAR"
   },
   "dependencies": {
-    "@aws-sdk/client-ssm": "^3.238.0",
+    "@aws-sdk/client-ssm": "^3.816.0",
     "@octokit/webhooks-types": "^6.8.0"
   }
 }
