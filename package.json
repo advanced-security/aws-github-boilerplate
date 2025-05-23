@@ -30,7 +30,6 @@
   },
   "homepage": "https://github.com/advanced-security/aws-github-boilerplate/#readme",
   "devDependencies": {
-    "husky": "^8.0.2",
     "@tsconfig/node18": "^1.0.1",
     "@types/json-schema": "^7.0.11",
     "@types/node": "^18.11.17",
@@ -39,6 +38,7 @@
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.2",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1",
